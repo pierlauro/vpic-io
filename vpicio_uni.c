@@ -6,14 +6,16 @@
 // 
 
 
-#include "H5Part.h"
+#include <H5Part.h>
 #include "H5Block.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <mpi.h>
 
 // A simple timer based on gettimeofday
-#include "./timer.h"
+#include "timer.h"
+
 struct timeval start_time[3];
 float elapse[3];
 
@@ -27,7 +29,8 @@ int y_dim = 64;
 int z_dim = 64;
 
 // Uniform random number
-inline double uniform_random_number() 
+//inline double uniform_random_number()
+double uniform_random_number()
 {
 	return (((double)rand())/((double)(RAND_MAX)));
 }
@@ -181,9 +184,8 @@ int main (int argc, char* argv[])
 
 	MPI_Barrier (MPI_COMM_WORLD);
 	timer_on (0);
-	//file = H5PartOpenFileParallelAlign(file_name, H5PART_WRITE, MPI_COMM_WORLD, alignf);
-	// file = H5PartOpenFileParallel (file_name, H5PART_WRITE | H5PART_VFD_MPIPOSIX | H5PART_FS_LUSTRE, MPI_COMM_WORLD);
-	file = H5PartOpenFileParallel (file_name, H5PART_WRITE | H5PART_FS_LUSTRE, MPI_COMM_WORLD);
+	//file = H5PartOpenFileParallel (file_name, H5PART_WRITE | H5PART_FS_LUSTRE, MPI_COMM_WORLD);
+	file = H5PartOpenFile (file_name, H5PART_WRITE | H5PART_FS_LUSTRE);
 
 	if (my_rank == 0)
 	{
