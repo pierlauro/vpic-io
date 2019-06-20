@@ -1,4 +1,4 @@
-H5PART_ROOT=/repos/h5part/build/
+H5PART_ROOT=/PyVOL/repos/h5part/build/
 
 CFLAGS  = -DPARALLEL_IO -I$(H5PART_ROOT)/include -I/usr/include/mpich -I/hdf5/build/include
 LDFLAGS = -L$(H5PART_ROOT)/lib 

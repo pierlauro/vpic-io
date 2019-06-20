@@ -63,86 +63,98 @@ void create_and_write_synthetic_h5part_data(int rank)
 	if (rank == 0) printf ("Num particles is set \n");
 	float var_data_size;
 
-	timer_on (2);
+	//timer_on(3);
 	H5PartWriteDataFloat32(file,"x",x); 
-	timer_off (2);
+	//timer_off(3);
 	var_data_size = numparticles * sizeof (h5part_float32_t)/(1024*1024);
 #ifdef TIME_DEBUG
 	printf ("Rank: %d, wrote %.2f MB, time: %f sec; rate: %f\n", rank, var_data_size, elapse[2], var_data_size/elapse[2]);
 #endif
-	timer_reset(2);
+	//timer_reset(3);
 	if (rank == 0) printf ("Written variable 1 \n");
 
-	timer_on (2);
+	//timer_on(3);
 	H5PartWriteDataFloat32(file,"y",y);
 	if (rank == 0) printf ("Written variable 2 \n");
-	timer_off (2);
+	//timer_off(3);
 	var_data_size = numparticles * sizeof (h5part_float32_t)/(1024*1024);
 #ifdef TIME_DEBUG
 	printf ("Rank: %d, wrote %.2f MB, time: %f sec; rate: %f\n", rank, var_data_size, elapse[2], var_data_size/elapse[2]);
 #endif
-	timer_reset(2);
+	//timer_reset(3);
 
-	timer_on (2);
+	//timer_on(3);
 	H5PartWriteDataFloat32(file,"z",z);
 	if (rank == 0) printf ("Written variable 3 \n");
-	timer_off (2);
+	//timer_off(3);
 	var_data_size = numparticles * sizeof (h5part_float32_t)/(1024*1024);
 #ifdef TIME_DEBUG
 	printf ("Rank: %d, wrote %.2f MB, time: %f sec; rate: %f\n", rank, var_data_size, elapse[2], var_data_size/elapse[2]);
 #endif
-	timer_reset(2);
+	//timer_reset(3);
 
-	timer_on (2);
+	//timer_on(3);
 	H5PartWriteDataInt32(file,"id1",id1);
 	if (rank == 0) printf ("Written variable 4 \n");
-	timer_off (2);
+	//timer_off(3);
 	var_data_size = numparticles * sizeof (h5part_int32_t)/(1024*1024);
 #ifdef TIME_DEBUG
 	printf ("Rank: %d, wrote %.2f MB, time: %f sec; rate: %f\n", rank, var_data_size, elapse[2], var_data_size/elapse[2]);
 #endif
-	timer_reset(2);
+	//timer_reset(3);
 
-	timer_on (2);
+	//timer_on(3);
 	H5PartWriteDataInt32(file,"id2",id2);
 	if (rank == 0) printf ("Written variable 5 \n");
-	timer_off (2);
+	//timer_off(3);
 	var_data_size = numparticles * sizeof (h5part_int32_t)/(1024*1024);
 #ifdef TIME_DEBUG
 	printf ("Rank: %d, wrote %.2f MB, time: %f sec; rate: %f\n", rank, var_data_size, elapse[2], var_data_size/elapse[2]);
 #endif
-	timer_reset(2);
+	//timer_reset(3);
 
-	timer_on (2);
+	//timer_on(3);
 	H5PartWriteDataFloat32(file,"px",px); 
 	if (rank == 0) printf ("Written variable 6 \n");
-	timer_off (2);
+	//timer_off(3);
 	var_data_size = numparticles * sizeof (h5part_float32_t)/(1024*1024);
 #ifdef TIME_DEBUG
 	printf ("Rank: %d, wrote %.2f MB, time: %f sec; rate: %f\n", rank, var_data_size, elapse[2], var_data_size/elapse[2]);
 #endif
-	timer_reset(2);
+	//timer_reset(3);
 
-	timer_on (2);
+	//timer_on(3);
 	H5PartWriteDataFloat32(file,"py",py);
 	if (rank == 0) printf ("Written variable 7 \n");
-	timer_off (2);
+	//timer_off(3);
 	var_data_size = numparticles * sizeof (h5part_float32_t)/(1024*1024);
 #ifdef TIME_DEBUG
 	printf ("Rank: %d, wrote %.2f MB, time: %f sec; rate: %f\n", rank, var_data_size, elapse[2], var_data_size/elapse[2]);
 #endif
-	timer_reset(2);
+	//timer_reset(3);
 
-	timer_on (2);
+	//timer_on(3);
 	H5PartWriteDataFloat32(file,"pz",pz);
 	if (rank == 0) printf ("Written variable 8 \n");
-	timer_off (2);
+	//timer_off(3);
 	var_data_size = numparticles * sizeof (h5part_float32_t)/(1024*1024);
 #ifdef TIME_DEBUG
 	printf ("Rank: %d, wrote %.2f MB, time: %f sec; rate: %f\n", rank, var_data_size, elapse[2], var_data_size/elapse[2]);
 #endif
-	timer_reset(2);
+	//timer_reset(3);
 }
+
+// Read data
+void read_synthetic_h5part_data(int rank){
+	H5PartReadDataFloat32(file,"y",y);
+	H5PartReadDataFloat32(file,"z",z);
+	H5PartReadDataInt32(file,"id1",id1);
+	H5PartReadDataInt32(file,"id2",id2);
+	H5PartReadDataFloat32(file,"px",px);
+	H5PartReadDataFloat32(file,"py",py);
+	H5PartReadDataFloat32(file,"pz",pz);
+}
+
 
 int main (int argc, char* argv[]) 
 {
@@ -197,14 +209,22 @@ int main (int argc, char* argv[])
 	H5PartWriteFileAttribString(file, "Origin", "Tested by Suren");
 
 	MPI_Barrier (MPI_COMM_WORLD);
-	timer_on (1);
+	timer_on(2);
 
 	if (my_rank == 0) printf ("Before writing particles \n");
 	create_and_write_synthetic_h5part_data(my_rank);
 
 	MPI_Barrier (MPI_COMM_WORLD);
-	timer_off (1);
+
 	if (my_rank == 0) printf ("After writing particles \n");
+
+	timer_off(2);
+
+	timer_on(1);
+	if (my_rank == 0) printf ("Before reading particles \n");
+	read_synthetic_h5part_data(my_rank);
+	if (my_rank == 0) printf ("After reading particles \n");
+	timer_off(1);
 
 	H5PartCloseFile(file);
 	if (my_rank == 0) printf ("After closing particles \n");
@@ -221,8 +241,9 @@ int main (int argc, char* argv[])
 	if (my_rank == 0)
 	{
 		printf ("\nTiming results\n");
-		timer_msg (1, "just writing data");
-		timer_msg (0, "opening, writing, closing file");
+		timer_msg (2, "just writing data");
+		timer_msg (1, "just reading data");
+		timer_msg (0, "opening, writing, reading, closing file");
 		printf ("\n");
 	}
 
