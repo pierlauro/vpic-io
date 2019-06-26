@@ -173,6 +173,7 @@ int main (int argc, char* argv[])
 	{
 		numparticles = 32*1024*1024;
 	}
+	numparticles = 22*1024*1024;
 
 	if (my_rank == 0) {printf ("Number of paritcles: %ld \n", numparticles);}
 
@@ -196,8 +197,8 @@ int main (int argc, char* argv[])
 
 	MPI_Barrier (MPI_COMM_WORLD);
 	timer_on (0);
-	//file = H5PartOpenFileParallel (file_name, H5PART_WRITE | H5PART_FS_LUSTRE, MPI_COMM_WORLD);
-	file = H5PartOpenFile (file_name, H5PART_WRITE | H5PART_FS_LUSTRE);
+	file = H5PartOpenFileParallel (file_name, H5PART_WRITE | H5PART_FS_LUSTRE, MPI_COMM_WORLD);
+	//file = H5PartOpenFile (file_name, H5PART_WRITE | H5PART_FS_LUSTRE);
 
 	if (my_rank == 0)
 	{
